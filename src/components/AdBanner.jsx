@@ -51,13 +51,16 @@ export default function AdBanner({
         };
     }, [slot, adLoaded]);
 
+    // Extraer minHeight para aplicarlo también a la etiqueta ins
+    const minHeight = style.minHeight || '90px';
+
     return (
         <div
             className={`ad-banner-container ${className}`}
             style={{
                 textAlign: 'center',
                 margin: '20px 0',
-                minHeight: '90px',
+                minHeight: minHeight,
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'center',
@@ -68,7 +71,7 @@ export default function AdBanner({
             <ins
                 ref={adRef}
                 className="adsbygoogle"
-                style={{ display: 'block', width: '100%' }}
+                style={{ display: 'block', width: '100%', minHeight: minHeight }}
                 data-ad-client="ca-pub-6148697034768001"
                 data-ad-slot={slot}
                 data-ad-format={format}
