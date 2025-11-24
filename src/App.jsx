@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useContext, createContext } from '
 import * as LucideIcons from 'lucide-react';
 
 import { translations } from './translations';
+import AdBanner from './components/AdBanner';
 
 // --- THEME & LANGUAGE CONTEXT ---
 const ThemeContext = createContext();
@@ -745,9 +746,23 @@ const AppContent = () => {
                     </p>
                 </section>
 
+                {/* Header Ad Banner */}
+                <AdBanner
+                    slot="4322222107"
+                    format="horizontal"
+                    style={{ marginBottom: '2rem' }}
+                />
+
                 <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-200 dark:border-slate-800 p-6 md:p-10 fade-in">
                     {renderContent()}
                 </div>
+
+                {/* Middle Ad Banner */}
+                <AdBanner
+                    slot="4322222107"
+                    format="auto"
+                    style={{ margin: '3rem 0' }}
+                />
 
                 {/* SEO Content Block */}
                 <article className="mt-16 prose prose-lg prose-blue dark:prose-invert max-w-4xl mx-auto">
