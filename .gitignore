@@ -66,3 +66,4 @@ storybook-static/
 
 # Tailwind (archivos generados)
 *.css.map
+MIGRATION_GUIDE.md
