@@ -735,7 +735,7 @@ const AppContent = () => {
             </header>
 
             {/* Main Content */}
-            <main className="flex-grow max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+            <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
 
                 <section className="mb-8 md:mb-12 text-center max-w-2xl mx-auto fade-in">
                     <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-4">
@@ -746,42 +746,74 @@ const AppContent = () => {
                     </p>
                 </section>
 
-                {/* Header Ad Banner */}
-                <AdBanner
-                    slot="4322222107"
-                    format="horizontal"
-                    style={{ marginBottom: '2rem' }}
-                />
+                <div className="flex flex-col xl:flex-row gap-8 items-start">
 
-                <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-200 dark:border-slate-800 p-6 md:p-10 fade-in">
-                    {renderContent()}
-                </div>
+                    {/* LEFT SIDEBAR - DESKTOP ONLY */}
+                    <aside className="hidden xl:block w-[160px] flex-shrink-0 sticky top-24">
+                        <div className="text-xs text-center text-gray-400 mb-2">Publicidad</div>
+                        <AdBanner
+                            slot="4322222107"
+                            format="vertical"
+                            style={{ minHeight: '600px', width: '160px' }}
+                        />
+                    </aside>
 
-                {/* Middle Ad Banner */}
-                <AdBanner
-                    slot="4322222107"
-                    format="auto"
-                    style={{ margin: '3rem 0' }}
-                />
+                    {/* CENTER CONTENT */}
+                    <div className="flex-1 w-full min-w-0">
 
-                {/* SEO Content Block */}
-                <article className="mt-16 prose prose-lg prose-blue dark:prose-invert max-w-4xl mx-auto">
-                    <h2>{t('whySimulators')}</h2>
-                    <p>
-                        {t('seoText1')}
-                    </p>
-                    <ul>
-                        <li><strong>{t('seoLi1')}:</strong> {t('seoLi1Text')}</li>
-                        <li><strong>{t('seoLi2')}:</strong> {t('seoLi2Text')}</li>
-                        <li><strong>{t('seoLi3')}:</strong> {t('seoLi3Text')}</li>
-                    </ul>
-                    <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-xl border border-blue-100 dark:border-blue-800 not-prose mt-8">
-                        <h3 className="text-blue-800 dark:text-blue-300 font-bold text-lg mb-2">{t('realReturnNoteTitle')}</h3>
-                        <p className="text-blue-700 dark:text-blue-200 text-sm">
-                            {t('realReturnNoteText')}
-                        </p>
+                        {/* MOBILE/TABLET TOP AD (Hidden on Desktop) */}
+                        <div className="xl:hidden">
+                            <AdBanner
+                                slot="4322222107"
+                                format="horizontal"
+                                style={{ marginBottom: '2rem' }}
+                            />
+                        </div>
+
+                        <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-200 dark:border-slate-800 p-6 md:p-10 fade-in">
+                            {renderContent()}
+                        </div>
+
+                        {/* MOBILE/TABLET BOTTOM AD (Hidden on Desktop) */}
+                        <div className="xl:hidden">
+                            <AdBanner
+                                slot="4322222107"
+                                format="auto"
+                                style={{ margin: '3rem 0' }}
+                            />
+                        </div>
+
+                        {/* SEO Content Block */}
+                        <article className="mt-16 prose prose-lg prose-blue dark:prose-invert max-w-4xl mx-auto">
+                            <h2>{t('whySimulators')}</h2>
+                            <p>
+                                {t('seoText1')}
+                            </p>
+                            <ul>
+                                <li><strong>{t('seoLi1')}:</strong> {t('seoLi1Text')}</li>
+                                <li><strong>{t('seoLi2')}:</strong> {t('seoLi2Text')}</li>
+                                <li><strong>{t('seoLi3')}:</strong> {t('seoLi3Text')}</li>
+                            </ul>
+                            <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-xl border border-blue-100 dark:border-blue-800 not-prose mt-8">
+                                <h3 className="text-blue-800 dark:text-blue-300 font-bold text-lg mb-2">{t('realReturnNoteTitle')}</h3>
+                                <p className="text-blue-700 dark:text-blue-200 text-sm">
+                                    {t('realReturnNoteText')}
+                                </p>
+                            </div>
+                        </article>
                     </div>
-                </article>
+
+                    {/* RIGHT SIDEBAR - DESKTOP ONLY */}
+                    <aside className="hidden xl:block w-[160px] flex-shrink-0 sticky top-24">
+                        <div className="text-xs text-center text-gray-400 mb-2">Publicidad</div>
+                        <AdBanner
+                            slot="4322222107"
+                            format="vertical"
+                            style={{ minHeight: '600px', width: '160px' }}
+                        />
+                    </aside>
+
+                </div>
 
             </main>
 
