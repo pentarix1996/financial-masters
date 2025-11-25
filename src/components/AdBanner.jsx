@@ -1,10 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
-/**
- * Componente para mostrar anuncios de Google AdSense
- * Utiliza IntersectionObserver para cargar anuncios solo cuando son visibles (Lazy Loading)
- * Esto previene errores de "width=0" y llamadas duplicadas.
- */
 export default function AdBanner({
     slot,
     format = 'auto',
@@ -13,46 +8,22 @@ export default function AdBanner({
     className = ''
 }) {
     const adRef = useRef(null);
-    const [adLoaded, setAdLoaded] = useState(false);
+    const initialized = useRef(false);
 
     useEffect(() => {
-        // Si ya se cargó o no hay referencia, salir
-        if (adLoaded || !adRef.current) return;
+        // Evitamos doble ejecución en modo estricto de React o recargas rápidas
+        if (initialized.current) return;
 
-        // Crear un observador para detectar cuando el anuncio es visible
-        const observer = new IntersectionObserver((entries) => {
-            const entry = entries[0];
-
-            // Solo cargar si es visible (isIntersecting) y tiene tamaño real
-            if (entry.isIntersecting && entry.target.offsetWidth > 0) {
-                try {
-                    // Verificar una última vez si ya tiene el atributo data-ad-status
-                    // (AdSense lo añade automáticamente cuando carga)
-                    if (!adRef.current.getAttribute('data-ad-status')) {
-                        (window.adsbygoogle = window.adsbygoogle || []).push({});
-                        setAdLoaded(true); // Marcar como cargado para no reintentar
-                    }
-                } catch (error) {
-                    console.error('AdSense error:', error);
-                }
-
-                // Una vez cargado, ya no necesitamos observar
-                observer.disconnect();
+        // Verificamos que el contenedor tenga anchura antes de pedir el anuncio
+        if (adRef.current && adRef.current.offsetWidth > 0) {
+            try {
+                (window.adsbygoogle = window.adsbygoogle || []).push({});
+                initialized.current = true;
+            } catch (e) {
+                console.error("AdSense error", e);
             }
-        }, {
-            root: null, // viewport
-            threshold: 0.01 // Disparar apenas sea 1% visible
-        });
-
-        observer.observe(adRef.current);
-
-        return () => {
-            if (observer) observer.disconnect();
-        };
-    }, [slot, adLoaded]);
-
-    // Extraer minHeight para aplicarlo también a la etiqueta ins
-    const minHeight = style.minHeight || '90px';
+        }
+    }, []); // El array vacío asegura que solo se ejecute una vez al montar
 
     return (
         <div
@@ -60,23 +31,21 @@ export default function AdBanner({
             style={{
                 textAlign: 'center',
                 margin: '20px 0',
-                minHeight: minHeight,
                 width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
+                display: 'block', // Importante: block evita colapsos de flexbox
+                minHeight: style.minHeight || '90px', // Reserva espacio para evitar saltos (CLS)
                 ...style
             }}
         >
             <ins
                 ref={adRef}
                 className="adsbygoogle"
-                style={{ display: 'block', width: '100%', minHeight: minHeight }}
+                style={{ display: 'block' }}
                 data-ad-client="ca-pub-6148697034768001"
                 data-ad-slot={slot}
                 data-ad-format={format}
                 data-full-width-responsive={responsive.toString()}
-            />
+            ></ins>
         </div>
     );
 }

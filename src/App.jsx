@@ -8,6 +8,28 @@ import AdBanner from './components/AdBanner';
 const ThemeContext = createContext();
 const LanguageContext = createContext();
 
+const useIsDesktop = () => {
+    const [isDesktop, setIsDesktop] = useState(false);
+
+    useEffect(() => {
+        // 1280px es el punto de ruptura 'xl' estándar de Tailwind
+        const mediaQuery = window.matchMedia('(min-width: 1280px)');
+
+        // Función para actualizar el estado
+        const handleResize = (e) => setIsDesktop(e.matches);
+
+        // Establecer valor inicial
+        setIsDesktop(mediaQuery.matches);
+
+        // Escuchar cambios
+        mediaQuery.addEventListener('change', handleResize);
+
+        return () => mediaQuery.removeEventListener('change', handleResize);
+    }, []);
+
+    return isDesktop;
+};
+
 const LanguageProvider = ({ children }) => {
     const [language, setLanguage] = useState('es');
 
@@ -629,6 +651,7 @@ const AppContent = () => {
     const [activeTab, setActiveTab] = useState('compound');
     const { theme, toggleTheme } = useContext(ThemeContext);
     const { t, language, setLanguage } = useContext(LanguageContext);
+    const isDesktop = useIsDesktop();
 
     const tabs = [
         { id: 'compound', label: t('tabCompound'), icon: 'trending-up' },
@@ -748,40 +771,45 @@ const AppContent = () => {
 
                 <div className="flex flex-col xl:flex-row gap-8 items-start">
 
-                    {/* LEFT SIDEBAR - DESKTOP ONLY */}
-                    <aside className="hidden xl:block w-[160px] flex-shrink-0 sticky top-24">
-                        <div className="text-xs text-center text-gray-400 mb-2">Publicidad</div>
-                        <AdBanner
-                            slot="4322222107"
-                            format="vertical"
-                            style={{ minHeight: '600px', width: '160px' }}
-                        />
-                    </aside>
+                    {isDesktop && (
+                        <aside className="w-[160px] flex-shrink-0 sticky top-24">
+                            <div className="text-xs text-center text-gray-400 mb-2"></div>
+                            <AdBanner
+                                slot="4322222107"
+                                format="vertical" // Skyscraper
+                                style={{ minHeight: '600px', width: '160px' }}
+                            />
+                        </aside>
+                    )}
 
                     {/* CENTER CONTENT */}
                     <div className="flex-1 w-full min-w-0">
 
                         {/* MOBILE/TABLET TOP AD (Hidden on Desktop) */}
-                        <div className="xl:hidden">
-                            <AdBanner
-                                slot="4322222107"
-                                format="horizontal"
-                                style={{ marginBottom: '2rem' }}
-                            />
-                        </div>
+                        {!isDesktop && (
+                            <div className="mb-8">
+                                <AdBanner
+                                    slot="4322222107"
+                                    format="horizontal"
+                                    style={{ minHeight: '100px', width: '100%' }}
+                                />
+                            </div>
+                        )}
 
                         <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-200 dark:border-slate-800 p-6 md:p-10 fade-in">
                             {renderContent()}
                         </div>
 
                         {/* MOBILE/TABLET BOTTOM AD (Hidden on Desktop) */}
-                        <div className="xl:hidden">
-                            <AdBanner
-                                slot="4322222107"
-                                format="auto"
-                                style={{ margin: '3rem 0' }}
-                            />
-                        </div>
+                        {!isDesktop && (
+                            <div className="mt-8">
+                                <AdBanner
+                                    slot="4322222107"
+                                    format="auto"
+                                    style={{ minHeight: '250px', width: '100%' }}
+                                />
+                            </div>
+                        )}
 
                         {/* SEO Content Block */}
                         <article className="mt-16 prose prose-lg prose-blue dark:prose-invert max-w-4xl mx-auto">
@@ -804,15 +832,16 @@ const AppContent = () => {
                     </div>
 
                     {/* RIGHT SIDEBAR - DESKTOP ONLY */}
-                    <aside className="hidden xl:block w-[160px] flex-shrink-0 sticky top-24">
-                        <div className="text-xs text-center text-gray-400 mb-2">Publicidad</div>
-                        <AdBanner
-                            slot="4322222107"
-                            format="vertical"
-                            style={{ minHeight: '600px', width: '160px' }}
-                        />
-                    </aside>
-
+                    {isDesktop && (
+                        <aside className="w-[160px] flex-shrink-0 sticky top-24">
+                            <div className="text-xs text-center text-gray-400 mb-2"></div>
+                            <AdBanner
+                                slot="4322222107"
+                                format="vertical"
+                                style={{ minHeight: '600px', width: '160px' }}
+                            />
+                        </aside>
+                    )}
                 </div>
 
             </main>
