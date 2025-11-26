@@ -843,7 +843,9 @@ const AppContent = () => {
                         </aside>
                     )}
                 </div>
-
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({ });
+                </script>
             </main>
 
             <footer className="bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-800 mt-20 transition-colors">
